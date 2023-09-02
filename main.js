@@ -7,6 +7,9 @@ const productDetail = document.querySelector('#shopping')
 const toggleDetail = document.getElementById("product-detail")
 const cardsContainer = document.querySelector('.cards-container')
 const detailClose = document.querySelector('.product-detail-close')
+const nameProduct = document.getElementById("name")
+const priceProduct = document.getElementById("price")
+const agregar = document.getElementById('agregar')
 
 menuEmail.addEventListener('click', ()=>{
   if (!productDetail.classList.contains('inactive')) {
@@ -48,32 +51,95 @@ detailClose.addEventListener('click',()=>{
 })
 
 //compras
-
-let productList = [];
+productList = [];
 productList.push({
-  name: 'Bike',
-  price: 120,
-  Image: 'https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'
+  Image: 'https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+  name: "Television",
+  price: 330
+  }
+)
+agregar.addEventListener("click", (e)=>{
+  e.preventDefault()
+  productList.name = nameProduct.value
+  productList.price = parseInt(priceProduct.value)
+  productList.Image = 'https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'
 
-})
-productList.push({
-  name: 'television',
-  price: 300,
-  Image: 'https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'
+  const productCard = document.createElement('div')
+    productCard.classList.add("product-card")
 
+    const productImg = document.createElement('img');
+    productImg.setAttribute('src', productList.Image)
+
+    productImg.addEventListener('click', ()=>{
+      productToggle(productInfoDiv,productImg)
+      productInfo.removeChild(productInfoFigure)
+      toggleDetail.classList.remove('inactive');
+    })
+    detailClose.addEventListener('click', ()=>{
+      productInfoFigure.appendChild(productImgCart)
+
+      productInfo.appendChild(productInfoDiv)
+      productInfo.appendChild(productInfoFigure)
+
+      productCard.appendChild(productImg)
+      productCard.appendChild(productInfo)
+
+      cardsContainer.appendChild(productCard)
+    })
+
+    const productInfo = document.createElement('div')
+    productInfo.classList.add("product-info")
+
+    const productInfoDiv = document.createElement('div')
+
+    const productprice = document.createElement('p')
+    productprice.innerText = productList.price;
+
+    const productName = document.createElement('p')
+    productName.innerText = productList.name;
+
+    productInfoDiv.appendChild(productprice)
+    productInfoDiv.appendChild(productName)
+
+    const productInfoFigure = document.createElement('figure')
+    const productImgCart = document.createElement('img')
+    productImgCart.setAttribute('src', './icons/bt_add_to_cart.svg')
+    productInfoFigure.appendChild(productImgCart)
+
+    productInfo.appendChild(productInfoDiv)
+    productInfo.appendChild(productInfoFigure)
+
+    productCard.appendChild(productImg)
+    productCard.appendChild(productInfo)
+
+    cardsContainer.appendChild(productCard)
 })
+
 
 function arrayInsert(arr) {
-  for(products of arr){
+  arr.forEach((products)=>{
     const productCard = document.createElement('div')
     productCard.classList.add("product-card")
 
     const productImg = document.createElement('img');
     productImg.setAttribute('src', products.Image)
+
     productImg.addEventListener('click', ()=>{
+      productToggle(productInfoDiv,productImg)
+      productInfo.removeChild(productInfoFigure)
       toggleDetail.classList.remove('inactive');
     })
+    detailClose.addEventListener('click', ()=>{
+      productInfoFigure.appendChild(productImgCart)
 
+      productInfo.appendChild(productInfoDiv)
+      productInfo.appendChild(productInfoFigure)
+
+      productCard.appendChild(productImg)
+      productCard.appendChild(productInfo)
+
+      cardsContainer.appendChild(productCard)
+    })
     const productInfo = document.createElement('div')
     productInfo.classList.add("product-info")
 
@@ -100,7 +166,31 @@ function arrayInsert(arr) {
     productCard.appendChild(productInfo)
 
     cardsContainer.appendChild(productCard)
-  }
+  })
+  
+  
+}
+arrayInsert(productList)
+
+
+function productToggle(info, img){
+
+  const divProductInfo = document.createElement('div')
+  divProductInfo.classList.add('product-info')
+  description = document.createElement('p')
+  description.innerText = "With its practical position, this bike also fulfills a decorative function, add your hall or workspace."
+  const image = document.createElement('img')
+  image.setAttribute('src', './icons/bt_add_to_cart.svg')
+
+  divProductInfo.appendChild(info)
+  divProductInfo.appendChild(description)
+  toggleDetail.appendChild(img)
+  toggleDetail.appendChild(divProductInfo)
+
+  detailClose.addEventListener("click",()=>{
+    toggleDetail.removeAttribute(img)
+    divProductInfo.remove(description)
+  })
 }
 
-arrayInsert(productList)
+
